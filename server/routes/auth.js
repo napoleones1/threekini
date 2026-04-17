@@ -29,14 +29,16 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// POST /api/auth/register (hanya untuk setup awal, bisa dinonaktifkan)
+// POST /api/auth/register
 router.post('/register', async (req, res) => {
   try {
     const { username, email, password, role } = req.body;
     const exists = await User.findOne({ $or: [{ username }, { email }] });
     if (exists) return res.status(400).json({ message: 'Username atau email sudah digunakan.' });
 
-    const user = await User.create({ username, email, password, role: role || 'admin' });
+    // Hanya izinkan role admin/editor dari register publik, superadmin hanya via setup
+    const allowedRole = ['admin', 'editor'].includes(role) ? role : 'editor';
+    const user = await User.create({ username, email, password, role: allowedRole });
     res.status(201).json({ message: 'Akun berhasil dibuat.', userId: user._id });
   } catch (err) {
     res.status(500).json({ message: err.message });

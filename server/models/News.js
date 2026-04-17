@@ -9,8 +9,9 @@ const newsSchema = new mongoose.Schema({
   image:     { type: String, default: '' },
   author:    { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   authorName:{ type: String },
-  status:    { type: String, enum: ['draft', 'published'], default: 'draft' },
+  status:    { type: String, enum: ['draft', 'pending', 'published', 'rejected'], default: 'draft' },
   views:     { type: Number, default: 0 },
+  rejectReason: { type: String, default: '' },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 }, {});
