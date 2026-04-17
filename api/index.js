@@ -7,27 +7,33 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Routes
 app.use('/api/auth', require('../server/routes/auth'));
 app.use('/api/news', require('../server/routes/news'));
 
-// Debug endpoint — hapus setelah confirmed working
 app.get('/api/ping', (req, res) => {
-  res.json({
-    status: 'ok',
-    mongo: mongoose.connection.readyState,
-    hasUri: !!process.env.MONGODB_URI
-  });
+  res.json({ status: 'ok', mongo: mongoose.connection.readyState, hasUri: !!process.env.MONGODB_URI });
 });
 
-// MongoDB connection (cached untuk serverless)
-let isConnected = false;
+// Koneksi MongoDB — tidak di-cache agar selalu fresh di serverless
 async function connectDB() {
-  if (isConnected && mongoose.connection.readyState === 1) return;
+  if (mongoose.connection.readyState === 1) return;
+  if (mongoose.connection.readyState === 2) {
+    // Sedang connecting, tunggu
+    await new Promise(resolve => mongoose.connection.once('connected', resolve));
+    return;
+  }
+  // Disconnect dulu kalau ada koneksi lama yang stuck
+  if (mongoose.connection.readyState !== 0) {
+    await mongoose.disconnect();
+  }
   await mongoose.connect(process.env.MONGODB_URI, {
-    serverSelectionTimeoutMS: 10000
+    serverSelectionTimeoutMS: 15000,
+    socketTimeoutMS: 30000,
+    maxPoolSize: 1,
+    minPoolSize: 0,
+    maxIdleTimeMS: 10000,
+    bufferCommands: false
   });
-  isConnected = true;
 }
 
 module.exports = async (req, res) => {

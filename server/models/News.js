@@ -13,7 +13,7 @@ const newsSchema = new mongoose.Schema({
   views:     { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
-});
+}, { bufferCommands: false });
 
 function generateSlug(title) {
   return title
