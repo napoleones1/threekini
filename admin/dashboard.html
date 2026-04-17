@@ -83,6 +83,28 @@
       .sidebar{width:60px}.sidebar-logo span,.nav-item span,.sidebar-footer .btn-logout span{display:none}
       .stats{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:1fr}
     }
+    @media(max-width:600px){
+      body{flex-direction:column}
+      .sidebar{width:100%;flex-direction:row;height:56px;overflow:hidden}
+      .sidebar-logo{padding:0 16px;font-size:18px;border-bottom:none;border-right:1px solid rgba(255,255,255,.15);display:flex;align-items:center}
+      .sidebar-logo span{display:none}
+      .sidebar nav{display:flex;flex-direction:row;padding:0;overflow-x:auto}
+      .nav-item{padding:0 14px;height:56px;flex-shrink:0}
+      .nav-item span{display:none}
+      .sidebar-footer{display:none}
+      .main{min-height:0}
+      .topbar h1{font-size:15px}
+      .stats{grid-template-columns:repeat(2,1fr);gap:10px}
+      .stat-card{padding:14px;gap:10px}
+      .stat-icon{width:36px;height:36px;font-size:16px}
+      .stat-info h3{font-size:18px}
+      .content{padding:12px}
+      .panel{padding:14px}
+      .form-grid{grid-template-columns:1fr}
+      table{font-size:12px}
+      td,th{padding:8px 6px}
+      .pending-actions{flex-wrap:wrap}
+    }
   </style>
 </head>
 <body>

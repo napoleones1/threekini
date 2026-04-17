@@ -28,7 +28,17 @@
         </div>
       </div>
       <nav class="navbar">
-        <ul>
+        <div class="navbar-bottom">
+          <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="search-box" id="search-box">
+            <input type="text" id="search-input" placeholder="Cari berita..." />
+            <i class="fa fa-search" id="search-btn"></i>
+          </div>
+          <a href="admin/login.html" class="btn-admin"><i class="fa fa-lock"></i> Admin</a>
+        </div>
+        <ul id="nav-menu">
           <li><a href="index.html">Home</a></li>
           <li><a href="category.html?cat=politik">Politik</a></li>
           <li><a href="category.html?cat=ekonomi">Ekonomi</a></li>
@@ -37,10 +47,6 @@
           <li><a href="category.html?cat=hiburan">Hiburan</a></li>
           <li><a href="category.html?cat=internasional">Internasional</a></li>
         </ul>
-        <div class="search-box" id="search-box">
-          <input type="text" id="search-input" placeholder="Cari berita..." />
-          <i class="fa fa-search" id="search-btn"></i>
-        </div>
       </nav>
     </div>
   </header>

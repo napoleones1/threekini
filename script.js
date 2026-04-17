@@ -1,5 +1,22 @@
 const API = '/api/news';
 
+// ===== HAMBURGER MENU =====
+function toggleMenu() {
+  const menu = document.getElementById('nav-menu');
+  const hamburger = document.getElementById('hamburger');
+  if (menu) menu.classList.toggle('open');
+  if (hamburger) hamburger.classList.toggle('open');
+}
+// Tutup menu saat klik di luar
+document.addEventListener('click', (e) => {
+  const menu = document.getElementById('nav-menu');
+  const hamburger = document.getElementById('hamburger');
+  if (menu && hamburger && !hamburger.contains(e.target) && !menu.contains(e.target)) {
+    menu.classList.remove('open');
+    hamburger.classList.remove('open');
+  }
+});
+
 // ===== DATE TIME =====
 function updateDateTime() {
   const el = document.getElementById('datetime');
