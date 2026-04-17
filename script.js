@@ -1,6 +1,4 @@
-const API = window.location.hostname === 'localhost'
-  ? 'http://localhost:5000/api/news'
-  : '/api/news';
+const API = '/api/news';
 
 // ===== DATE TIME =====
 function updateDateTime() {
@@ -39,7 +37,7 @@ function imgSrc(img, seed) {
 async function fetchNews(params = {}) {
   const qs = new URLSearchParams(params).toString();
   try {
-    const res = await fetch(`${API}?${qs}`);
+    const res = await fetch(`/api/news?${qs}`);
     const data = await res.json();
     return data.news || [];
   } catch {
@@ -216,7 +214,7 @@ async function initCategory() {
     if (cat) query.category = cat;
     if (search) query.search = search;
 
-    const res = await fetch(`${window.location.hostname === 'localhost' ? 'http://localhost:5000' : ''}/api/news?${new URLSearchParams(query)}`);
+    const res = await fetch(`/api/news?${new URLSearchParams(query)}`);
     const data = await res.json();
     const news = data.news || [];
 
@@ -273,7 +271,7 @@ async function initArticle() {
   if (!slug) return;
 
   try {
-    const res = await fetch(`${API}/${slug}`);
+    const res = await fetch(`/api/news/${slug}`);
     if (!res.ok) throw new Error('Berita tidak ditemukan');
     const n = await res.json();
 

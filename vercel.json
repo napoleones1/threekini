@@ -8,12 +8,14 @@
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "server/server.js" },
+    { "src": "/style.css", "dest": "/style.css" },
+    { "src": "/script.js", "dest": "/script.js" },
+    { "src": "/article.html", "dest": "/article.html" },
+    { "src": "/category.html", "dest": "/category.html" },
+    { "src": "/admin/login.html", "dest": "/admin/login.html" },
+    { "src": "/admin/dashboard.html", "dest": "/admin/dashboard.html" },
     { "src": "/uploads/(.*)", "dest": "server/server.js" },
-    { "src": "/admin/(.*)", "dest": "server/server.js" },
-    { "src": "/admin", "dest": "server/server.js" },
-    { "src": "/article(.*)", "dest": "server/server.js" },
-    { "src": "/category(.*)", "dest": "server/server.js" },
-    { "src": "/(.*\\.(css|js|png|jpg|jpeg|gif|ico|svg|webp))", "dest": "server/server.js" },
-    { "src": "/(.*)", "dest": "server/server.js" }
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/(.*)", "dest": "/$1" }
   ]
 }
