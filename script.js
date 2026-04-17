@@ -30,7 +30,18 @@ function initSearch() {
 }
 initSearch();
 
-// ===== DATE TIME =====
+// ===== BREAKING NEWS TICKER =====
+async function initTicker() {
+  const ticker = document.querySelector('.ticker span');
+  if (!ticker) return;
+  try {
+    const res = await fetch('/api/news?limit=8');
+    const data = await res.json();
+    const news = data.news || [];
+    if (!news.length) return;
+    ticker.textContent = news.map(n => n.title).join(' \u00a0•\u00a0 ') + ' \u00a0•\u00a0 ';
+  } catch { /* pakai teks default */ }
+}
 function updateDateTime() {
   const el = document.getElementById('datetime');
   if (!el) return;
@@ -303,6 +314,7 @@ async function initArticle() {
   }
 }
 
+initTicker();
 initIndex();
 initCategory();
 initArticle();
