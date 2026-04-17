@@ -25,6 +25,7 @@
     .topbar{background:#fff;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.08)}
     .topbar h1{font-size:18px;font-weight:700}
     .user-info{font-size:13px;color:#555;display:flex;align-items:center;gap:8px}
+    @media(max-width:600px){.hide-sm{display:none}.topbar{padding:10px 12px}.topbar h1{font-size:15px}}
     .content{flex:1;padding:24px;overflow-y:auto}
 
     .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
@@ -132,7 +133,10 @@
 <div class="main">
   <div class="topbar">
     <h1 id="page-title">Dashboard</h1>
-    <div class="user-info"><i class="fa fa-user-circle"></i> <span id="username-display"></span></div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="user-info"><i class="fa fa-user-circle"></i> <span id="username-display"></span></div>
+      <button onclick="logout()" style="background:#c62828;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="fa fa-sign-out-alt"></i> <span class="hide-sm">Logout</span></button>
+    </div>
   </div>
 
   <div class="content">

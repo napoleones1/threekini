@@ -157,6 +157,9 @@ img { width: 100%; display: block; object-fit: cover; }
 .share-tw { background: #1da1f2; }
 .share-wa { background: #25d366; }
 
+/* ===== CATEGORY PAGE LAYOUT ===== */
+.cat-page-layout { display: grid; grid-template-columns: 1fr 300px; gap: 24px; }
+
 /* ===== RESPONSIVE ===== */
 
 /* Hamburger — hidden di desktop, muncul di mobile */
@@ -176,10 +179,13 @@ img { width: 100%; display: block; object-fit: cover; }
   .hero-card img { height: 320px; }
   .hero-overlay h1 { font-size: 18px; }
   .main-layout { grid-template-columns: 1fr; }
-  .sidebar { display: none; }
+  .main-layout .sidebar { display: none; }
+  .cat-page-layout { grid-template-columns: 1fr; }
+  .cat-page-layout .sidebar { display: none; }
   .cat-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
   .article-layout { grid-template-columns: 1fr; }
+  .article-layout .sidebar { display: none; }
   .article-body img { height: 280px; }
   .news-grid { grid-template-columns: repeat(2, 1fr); }
 }
