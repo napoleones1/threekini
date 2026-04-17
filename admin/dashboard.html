@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
@@ -246,7 +246,7 @@
 
     // Load dashboard
     async function loadDashboard() {
-      const res = await apiFetch('/news/all');
+      const res = await apiFetch('/news/admin/all');
       const news = await res.json();
       const published = news.filter(n => n.status === 'published').length;
       const draft = news.filter(n => n.status === 'draft').length;
@@ -267,7 +267,7 @@
 
     // Load news list
     async function loadNewsList() {
-      const res = await apiFetch('/news/all');
+      const res = await apiFetch('/news/admin/all');
       const news = await res.json();
       document.getElementById('news-table').innerHTML = news.map(n => `
         <tr>
@@ -355,3 +355,4 @@
   </script>
 </body>
 </html>
+
