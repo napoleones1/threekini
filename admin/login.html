@@ -122,12 +122,15 @@
       const dot = document.getElementById('status-dot');
       const txt = document.getElementById('status-text');
       try {
-        const res = await fetch('/api/auth/status', { signal: AbortSignal.timeout(4000) });
-        dot.className = 'status-dot online';
-        txt.textContent = 'Server terhubung';
+        const res = await fetch('/api/ping', { signal: AbortSignal.timeout(5000) });
+        const data = await res.json();
+        if (data.status === 'ok') {
+          dot.className = 'status-dot online';
+          txt.textContent = 'Server terhubung';
+        } else throw new Error();
       } catch {
         dot.className = 'status-dot offline';
-        txt.textContent = 'Server tidak dapat dijangkau — pastikan server berjalan di port 5000';
+        txt.textContent = 'Server tidak dapat dijangkau';
       }
     }
     checkServer();
