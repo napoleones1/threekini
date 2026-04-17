@@ -9,8 +9,16 @@ app.use(express.json());
 app.use('/api/auth', require('../server/routes/auth'));
 app.use('/api/news', require('../server/routes/news'));
 
-app.get('/api/ping', (req, res) => {
-  res.json({ status: 'ok', mongo: mongoose.connection.readyState, hasUri: !!process.env.MONGODB_URI });
+app.get('/api/ping', async (req, res) => {
+  const state = mongoose.connection.readyState;
+  const states = { 0: 'disconnected', 1: 'connected', 2: 'connecting', 3: 'disconnecting' };
+  try {
+    if (state !== 1) await connectDB();
+    await mongoose.connection.db.admin().ping();
+    res.json({ status: 'ok', mongo: states[mongoose.connection.readyState], hasUri: !!process.env.MONGODB_URI, uri_prefix: process.env.MONGODB_URI?.substring(0, 30) });
+  } catch (err) {
+    res.json({ status: 'error', mongo: states[state], error: err.message, hasUri: !!process.env.MONGODB_URI });
+  }
 });
 
 let connectionPromise = null;
