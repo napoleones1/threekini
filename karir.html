@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Karir - Threekini</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    .page-hero { background: linear-gradient(135deg, #1C5F1F, #0d3b10); color: #fff; padding: 60px 0; text-align: center; }
+    .page-hero h1 { font-size: 36px; margin-bottom: 12px; }
+    .page-content { max-width: 900px; margin: 48px auto; padding: 0 16px; }
+    .page-content h2 { font-size: 22px; color: #1C5F1F; margin: 32px 0 16px; border-left: 4px solid #1C5F1F; padding-left: 12px; }
+    .page-content p { font-size: 15px; line-height: 1.8; color: #444; margin-bottom: 16px; }
+    .job-card { background: #fff; border-radius: 10px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,.08); margin-bottom: 16px; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+    .job-info h3 { font-size: 17px; margin-bottom: 6px; }
+    .job-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+    .job-tag { font-size: 11px; padding: 3px 8px; border-radius: 20px; font-weight: 600; }
+    .tag-full { background: #e8f5e9; color: #2e7d32; }
+    .tag-remote { background: #e3f2fd; color: #1565c0; }
+    .tag-intern { background: #fff3e0; color: #e65100; }
+    .job-info p { font-size: 13px; color: #666; }
+    .btn-apply { background: #1C5F1F; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 13px; white-space: nowrap; text-decoration: none; display: inline-block; }
+    .btn-apply:hover { background: #154d18; }
+    .no-jobs { text-align: center; padding: 48px; color: #aaa; }
+    .no-jobs i { font-size: 48px; margin-bottom: 16px; display: block; }
+    .perks { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin: 16px 0; }
+    .perk { background: #f0faf0; border-radius: 8px; padding: 16px; text-align: center; }
+    .perk i { font-size: 24px; color: #1C5F1F; margin-bottom: 8px; }
+    .perk p { font-size: 13px; color: #555; margin: 0; }
+    @media(max-width:600px){ .job-card { flex-direction: column; } .perks { grid-template-columns: 1fr; } .page-hero h1 { font-size: 26px; } }
+  </style>
+</head>
+<body>
+  <div class="breaking-bar">
+    <span class="breaking-label">BREAKING</span>
+    <div class="ticker-wrap"><div class="ticker"><span>Memuat berita terkini...</span></div></div>
+  </div>
+  <header class="header">
+    <div class="container">
+      <div class="header-top">
+        <a href="index.html" class="logo" style="text-decoration:none">Threekini</a>
+        <div class="header-right"><span class="date-time" id="datetime"></span><button class="btn-subscribe">Subscribe</button></div>
+      </div>
+      <nav class="navbar">
+        <ul id="nav-menu">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="category.html?cat=politik">Politik</a></li>
+          <li><a href="category.html?cat=ekonomi">Ekonomi</a></li>
+          <li><a href="category.html?cat=teknologi">Teknologi</a></li>
+          <li><a href="category.html?cat=olahraga">Olahraga</a></li>
+          <li><a href="category.html?cat=hiburan">Hiburan</a></li>
+          <li><a href="category.html?cat=internasional">Internasional</a></li>
+        </ul>
+        <div class="navbar-right">
+          <div class="search-box"><input type="text" id="search-input" placeholder="Cari berita..." /><i class="fa fa-search" id="search-btn"></i></div>
+          <a href="admin/login.html" class="btn-admin"><i class="fa fa-lock"></i> Admin</a>
+        </div>
+        <div class="navbar-row">
+          <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+          <div class="search-box search-mobile"><input type="text" id="search-input-mobile" placeholder="Cari berita..." /><i class="fa fa-search" id="search-btn-mobile"></i></div>
+          <a href="admin/login.html" class="btn-admin"><i class="fa fa-lock"></i> Admin</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div class="page-hero">
+    <h1>Bergabung dengan Threekini</h1>
+    <p>Jadilah bagian dari tim jurnalis dan kreator konten terbaik Indonesia</p>
+  </div>
+
+  <div class="page-content">
+    <h2>Mengapa Bergabung?</h2>
+    <div class="perks">
+      <div class="perk"><i class="fa fa-laptop"></i><p>Fleksibel bekerja dari mana saja</p></div>
+      <div class="perk"><i class="fa fa-graduation-cap"></i><p>Program pengembangan karir berkelanjutan</p></div>
+      <div class="perk"><i class="fa fa-users"></i><p>Tim yang kolaboratif dan suportif</p></div>
+    </div>
+
+    <h2>Lowongan Tersedia</h2>
+    <div class="job-card">
+      <div class="job-info">
+        <h3>Jurnalis / Reporter</h3>
+        <div class="job-tags"><span class="job-tag tag-full">Full Time</span><span class="job-tag tag-remote">Remote</span></div>
+        <p>Meliput dan menulis berita terkini di berbagai bidang. Pengalaman minimal 1 tahun di media online.</p>
+      </div>
+      <a href="kontak.html" class="btn-apply">Lamar</a>
+    </div>
+    <div class="job-card">
+      <div class="job-info">
+        <h3>Editor Konten</h3>
+        <div class="job-tags"><span class="job-tag tag-full">Full Time</span></div>
+        <p>Menyunting dan memastikan kualitas konten sebelum dipublikasikan. Pengalaman minimal 2 tahun.</p>
+      </div>
+      <a href="kontak.html" class="btn-apply">Lamar</a>
+    </div>
+    <div class="job-card">
+      <div class="job-info">
+        <h3>Social Media Specialist</h3>
+        <div class="job-tags"><span class="job-tag tag-full">Full Time</span><span class="job-tag tag-remote">Remote</span></div>
+        <p>Mengelola akun media sosial Threekini dan membuat konten yang engaging.</p>
+      </div>
+      <a href="kontak.html" class="btn-apply">Lamar</a>
+    </div>
+    <div class="job-card">
+      <div class="job-info">
+        <h3>Magang Jurnalistik</h3>
+        <div class="job-tags"><span class="job-tag tag-intern">Magang</span><span class="job-tag tag-remote">Remote</span></div>
+        <p>Program magang 3 bulan untuk mahasiswa jurusan komunikasi, jurnalistik, atau ilmu sosial.</p>
+      </div>
+      <a href="kontak.html" class="btn-apply">Lamar</a>
+    </div>
+
+    <p style="margin-top:24px;font-size:14px;color:#888">Kirim CV dan portofolio ke <strong>karir@threekini.com</strong> dengan subjek: <em>[Posisi] - Nama Anda</em></p>
+  </div>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div><div class="logo">Threekini</div><p>Temukan berita terkini dengan perspektif yang lebih luas, jelas, dan mudah dipahami.</p><div class="social-links"><a href="#"><i class="fab fa-facebook"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="https://www.instagram.com/threekini.media" target="_blank"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-youtube"></i></a></div></div>
+      <div><h4>Rubrik</h4><ul><li><a href="category.html?cat=politik">Politik</a></li><li><a href="category.html?cat=ekonomi">Ekonomi</a></li><li><a href="category.html?cat=teknologi">Teknologi</a></li><li><a href="category.html?cat=olahraga">Olahraga</a></li></ul></div>
+      <div><h4>Perusahaan</h4><ul><li><a href="tentang.html">Tentang Kami</a></li><li><a href="redaksi.html">Redaksi</a></li><li><a href="karir.html">Karir</a></li><li><a href="iklan.html">Iklan</a></li><li><a href="kontak.html">Kontak</a></li></ul></div>
+      <div><h4>Layanan</h4><ul><li><a href="#">Newsletter</a></li><li><a href="#">RSS Feed</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>&copy; 2026 Threekini. Seluruh hak cipta dilindungi undang-undang.</p></div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>

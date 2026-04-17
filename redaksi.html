@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Redaksi - Threekini</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    .page-hero { background: linear-gradient(135deg, #1C5F1F, #0d3b10); color: #fff; padding: 60px 0; text-align: center; }
+    .page-hero h1 { font-size: 36px; margin-bottom: 12px; }
+    .page-hero p { font-size: 16px; opacity: .85; }
+    .page-content { max-width: 900px; margin: 48px auto; padding: 0 16px; }
+    .page-content h2 { font-size: 22px; color: #1C5F1F; margin: 32px 0 20px; border-left: 4px solid #1C5F1F; padding-left: 12px; }
+    .team-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+    .team-card { background: #fff; border-radius: 10px; padding: 24px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+    .team-avatar { width: 80px; height: 80px; border-radius: 50%; background: #1C5F1F; color: #fff; font-size: 28px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
+    .team-card h3 { font-size: 16px; margin-bottom: 4px; }
+    .team-card .role { font-size: 13px; color: #1C5F1F; font-weight: 600; margin-bottom: 8px; }
+    .team-card p { font-size: 13px; color: #666; }
+    .ethics { background: #f0faf0; border-radius: 10px; padding: 24px; margin-top: 32px; border-left: 4px solid #1C5F1F; }
+    .ethics h3 { font-size: 18px; margin-bottom: 12px; color: #1C5F1F; }
+    .ethics ul { padding-left: 20px; }
+    .ethics ul li { font-size: 14px; color: #444; margin-bottom: 8px; line-height: 1.6; }
+    @media(max-width:600px){ .team-grid { grid-template-columns: 1fr; } .page-hero h1 { font-size: 26px; } }
+  </style>
+</head>
+<body>
+  <div class="breaking-bar">
+    <span class="breaking-label">BREAKING</span>
+    <div class="ticker-wrap"><div class="ticker"><span>Memuat berita terkini...</span></div></div>
+  </div>
+  <header class="header">
+    <div class="container">
+      <div class="header-top">
+        <a href="index.html" class="logo" style="text-decoration:none">Threekini</a>
+        <div class="header-right"><span class="date-time" id="datetime"></span><button class="btn-subscribe">Subscribe</button></div>
+      </div>
+      <nav class="navbar">
+        <ul id="nav-menu">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="category.html?cat=politik">Politik</a></li>
+          <li><a href="category.html?cat=ekonomi">Ekonomi</a></li>
+          <li><a href="category.html?cat=teknologi">Teknologi</a></li>
+          <li><a href="category.html?cat=olahraga">Olahraga</a></li>
+          <li><a href="category.html?cat=hiburan">Hiburan</a></li>
+          <li><a href="category.html?cat=internasional">Internasional</a></li>
+        </ul>
+        <div class="navbar-right">
+          <div class="search-box"><input type="text" id="search-input" placeholder="Cari berita..." /><i class="fa fa-search" id="search-btn"></i></div>
+          <a href="admin/login.html" class="btn-admin"><i class="fa fa-lock"></i> Admin</a>
+        </div>
+        <div class="navbar-row">
+          <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+          <div class="search-box search-mobile"><input type="text" id="search-input-mobile" placeholder="Cari berita..." /><i class="fa fa-search" id="search-btn-mobile"></i></div>
+          <a href="admin/login.html" class="btn-admin"><i class="fa fa-lock"></i> Admin</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div class="page-hero">
+    <h1>Redaksi Threekini</h1>
+    <p>Tim profesional di balik setiap berita yang kami sajikan</p>
+  </div>
+
+  <div class="page-content">
+    <h2>Pimpinan Redaksi</h2>
+    <div class="team-grid">
+      <div class="team-card"><div class="team-avatar">T</div><h3>Tim Threekini</h3><div class="role">Pemimpin Redaksi</div><p>Bertanggung jawab atas seluruh konten editorial Threekini</p></div>
+      <div class="team-card"><div class="team-avatar">R</div><h3>Redaktur Senior</h3><div class="role">Wakil Pemimpin Redaksi</div><p>Mengawasi kualitas dan akurasi setiap berita yang diterbitkan</p></div>
+      <div class="team-card"><div class="team-avatar">S</div><h3>Tim Sekretariat</h3><div class="role">Sekretaris Redaksi</div><p>Koordinasi operasional dan administrasi redaksi</p></div>
+    </div>
+
+    <h2>Tim Redaktur</h2>
+    <div class="team-grid">
+      <div class="team-card"><div class="team-avatar">P</div><h3>Desk Politik</h3><div class="role">Redaktur Politik</div><p>Liputan pemerintahan, DPR, dan kebijakan publik</p></div>
+      <div class="team-card"><div class="team-avatar">E</div><h3>Desk Ekonomi</h3><div class="role">Redaktur Ekonomi</div><p>Liputan bisnis, pasar keuangan, dan ekonomi makro</p></div>
+      <div class="team-card"><div class="team-avatar">T</div><h3>Desk Teknologi</h3><div class="role">Redaktur Teknologi</div><p>Liputan inovasi, startup, dan perkembangan digital</p></div>
+    </div>
+
+    <div class="ethics">
+      <h3><i class="fa fa-shield-alt"></i> Kode Etik Redaksi</h3>
+      <ul>
+        <li>Menjunjung tinggi kebenaran dan akurasi dalam setiap pemberitaan</li>
+        <li>Memberikan hak jawab kepada pihak yang diberitakan</li>
+        <li>Tidak menerima suap atau imbalan dalam bentuk apapun</li>
+        <li>Menjaga kerahasiaan sumber berita yang meminta perlindungan</li>
+        <li>Tidak menyebarkan berita yang mengandung SARA atau hoaks</li>
+        <li>Melakukan koreksi secara terbuka jika terdapat kesalahan pemberitaan</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div><div class="logo">Threekini</div><p>Temukan berita terkini dengan perspektif yang lebih luas, jelas, dan mudah dipahami.</p><div class="social-links"><a href="#"><i class="fab fa-facebook"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="https://www.instagram.com/threekini.media" target="_blank"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-youtube"></i></a></div></div>
+      <div><h4>Rubrik</h4><ul><li><a href="category.html?cat=politik">Politik</a></li><li><a href="category.html?cat=ekonomi">Ekonomi</a></li><li><a href="category.html?cat=teknologi">Teknologi</a></li><li><a href="category.html?cat=olahraga">Olahraga</a></li></ul></div>
+      <div><h4>Perusahaan</h4><ul><li><a href="tentang.html">Tentang Kami</a></li><li><a href="redaksi.html">Redaksi</a></li><li><a href="karir.html">Karir</a></li><li><a href="iklan.html">Iklan</a></li><li><a href="kontak.html">Kontak</a></li></ul></div>
+      <div><h4>Layanan</h4><ul><li><a href="#">Newsletter</a></li><li><a href="#">RSS Feed</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>&copy; 2026 Threekini. Seluruh hak cipta dilindungi undang-undang.</p></div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iklan - Threekini</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    .page-hero { background: linear-gradient(135deg, #1C5F1F, #0d3b10); color: #fff; padding: 60px 0; text-align: center; }
+    .page-hero h1 { font-size: 36px; margin-bottom: 12px; }
+    .page-hero p { font-size: 16px; opacity: .85; }
+    .page-content { max-width: 900px; margin: 48px auto; padding: 0 16px; }
+    .page-content h2 { font-size: 22px; color: #1C5F1F; margin: 32px 0 16px; border-left: 4px solid #1C5F1F; padding-left: 12px; }
+    .page-content p { font-size: 15px; line-height: 1.8; color: #444; margin-bottom: 16px; }
+    .ad-packages { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin: 24px 0; }
+    .ad-card { background: #fff; border-radius: 10px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,.08); border-top: 4px solid #1C5F1F; }
+    .ad-card h3 { font-size: 18px; margin-bottom: 8px; }
+    .ad-card .price { font-size: 22px; font-weight: 800; color: #1C5F1F; margin-bottom: 12px; }
+    .ad-card ul { padding-left: 18px; }
+    .ad-card ul li { font-size: 13px; color: #555; margin-bottom: 6px; }
+    .ad-card .btn-contact { display: block; text-align: center; background: #1C5F1F; color: #fff; padding: 10px; border-radius: 6px; font-weight: 700; margin-top: 16px; font-size: 14px; }
+    .ad-card .btn-contact:hover { background: #154d18; }
+    .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin: 24px 0; }
+    .stat-box { background: #f0faf0; border-radius: 8px; padding: 20px; text-align: center; }
+    .stat-box h3 { font-size: 28px; font-weight: 900; color: #1C5F1F; }
+    .stat-box p { font-size: 13px; color: #666; }
+    @media(max-width:700px){ .ad-packages,.stats-row { grid-template-columns: 1fr; } .page-hero h1 { font-size: 26px; } }
+  </style>
+</head>
+<body>
+  <div class="breaking-bar">
+    <span class="breaking-label">BREAKING</span>
+    <div class="ticker-wrap"><div class="ticker"><span>Memuat berita terkini...</span></div></div>
+  </div>
+  <header class="header">
+    <div class="container">
+      <div class="header-top">
+        <a href="index.html" class="logo" style="text-decoration:none">Threekini</a>
+        <div class="header-right"><span class="date-time" id="datetime"></span><button class="btn-subscribe">Subscribe</button></div>
+      </div>
+      <nav class="navbar">
+        <ul id="nav-menu">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="category.html?cat=politik">Politik</a></li>
+          <li><a href="category.html?cat=ekonomi">Ekonomi</a></li>
+          <li><a href="category.html?cat=teknologi">Teknologi</a></li>
+          <li><a href="category.html?cat=olahraga">Olahraga</a></li>
+          <li><a href="category.html?cat=hiburan">Hiburan</a></li>
+          <li><a href="category.html?cat=internasional">Internasional</a></li>
+        </ul>
+        <div class="navbar-right">
+          <div class="search-box"><input type="text" id="search-input" placeholder="Cari berita..." /><i class="fa fa-search" id="search-btn"></i></div>
+          <a href="admin/login.html" class="btn-admin"><i class="fa fa-lock"></i> Admin</a>
+        </div>
+        <div class="navbar-row">
+          <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+          <div class="search-box search-mobile"><input type="text" id="search-input-mobile" placeholder="Cari berita..." /><i class="fa fa-search" id="search-btn-mobile"></i></div>
+          <a href="admin/login.html" class="btn-admin"><i class="fa fa-lock"></i> Admin</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div class="page-hero">
+    <h1>Pasang Iklan di Threekini</h1>
+    <p>Jangkau jutaan pembaca setia kami dengan solusi iklan yang tepat sasaran</p>
+  </div>
+
+  <div class="page-content">
+    <div class="stats-row">
+      <div class="stat-box"><h3>50K+</h3><p>Pembaca Bulanan</p></div>
+      <div class="stat-box"><h3>8+</h3><p>Kategori Berita</p></div>
+      <div class="stat-box"><h3>70%</h3><p>Pembaca Mobile</p></div>
+      <div class="stat-box"><h3>5 mnt</h3><p>Rata-rata Waktu Baca</p></div>
+    </div>
+
+    <h2>Paket Iklan</h2>
+    <div class="ad-packages">
+      <div class="ad-card">
+        <h3>Starter</h3>
+        <div class="price">Rp 500K<span style="font-size:14px;font-weight:400;color:#888">/bulan</span></div>
+        <ul>
+          <li>Banner sidebar 300x250px</li>
+          <li>Tayang 30 hari</li>
+          <li>Laporan impresi bulanan</li>
+        </ul>
+        <a href="kontak.html" class="btn-contact">Hubungi Kami</a>
+      </div>
+      <div class="ad-card" style="border-top-color:#e65100">
+        <h3>Professional</h3>
+        <div class="price" style="color:#e65100">Rp 1.5JT<span style="font-size:14px;font-weight:400;color:#888">/bulan</span></div>
+        <ul>
+          <li>Banner header 728x90px</li>
+          <li>Banner sidebar 300x250px</li>
+          <li>Artikel sponsor 2x/bulan</li>
+          <li>Laporan mingguan</li>
+        </ul>
+        <a href="kontak.html" class="btn-contact" style="background:#e65100">Hubungi Kami</a>
+      </div>
+      <div class="ad-card">
+        <h3>Enterprise</h3>
+        <div class="price">Custom</div>
+        <ul>
+          <li>Semua posisi iklan</li>
+          <li>Artikel sponsor unlimited</li>
+          <li>Native advertising</li>
+          <li>Dedicated account manager</li>
+          <li>Laporan real-time</li>
+        </ul>
+        <a href="kontak.html" class="btn-contact">Hubungi Kami</a>
+      </div>
+    </div>
+
+    <h2>Hubungi Tim Iklan</h2>
+    <p>Untuk informasi lebih lanjut mengenai paket iklan dan kerjasama, silakan hubungi tim iklan kami:</p>
+    <p><i class="fa fa-envelope" style="color:#1C5F1F"></i> <strong>iklan@threekini.com</strong></p>
+    <p><i class="fab fa-whatsapp" style="color:#1C5F1F"></i> <strong>+62 812-3456-7890</strong></p>
+  </div>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div><div class="logo">Threekini</div><p>Temukan berita terkini dengan perspektif yang lebih luas, jelas, dan mudah dipahami.</p><div class="social-links"><a href="#"><i class="fab fa-facebook"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="https://www.instagram.com/threekini.media" target="_blank"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-youtube"></i></a></div></div>
+      <div><h4>Rubrik</h4><ul><li><a href="category.html?cat=politik">Politik</a></li><li><a href="category.html?cat=ekonomi">Ekonomi</a></li><li><a href="category.html?cat=teknologi">Teknologi</a></li><li><a href="category.html?cat=olahraga">Olahraga</a></li></ul></div>
+      <div><h4>Perusahaan</h4><ul><li><a href="tentang.html">Tentang Kami</a></li><li><a href="redaksi.html">Redaksi</a></li><li><a href="karir.html">Karir</a></li><li><a href="iklan.html">Iklan</a></li><li><a href="kontak.html">Kontak</a></li></ul></div>
+      <div><h4>Layanan</h4><ul><li><a href="#">Newsletter</a></li><li><a href="#">RSS Feed</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>&copy; 2026 Threekini. Seluruh hak cipta dilindungi undang-undang.</p></div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
