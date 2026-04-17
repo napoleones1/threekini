@@ -7,7 +7,6 @@ function toggleMenu() {
   if (menu) menu.classList.toggle('open');
   if (hamburger) hamburger.classList.toggle('open');
 }
-// Tutup menu saat klik di luar
 document.addEventListener('click', (e) => {
   const menu = document.getElementById('nav-menu');
   const hamburger = document.getElementById('hamburger');
@@ -16,6 +15,20 @@ document.addEventListener('click', (e) => {
     hamburger.classList.remove('open');
   }
 });
+
+// Search handler (desktop + mobile)
+function initSearch() {
+  function doSearch(q) {
+    if (q) window.location.href = (window.location.pathname.includes('category') ? '' : '') + `category.html?search=${encodeURIComponent(q)}`;
+  }
+  // Desktop
+  document.getElementById('search-btn')?.addEventListener('click', () => doSearch(document.getElementById('search-input')?.value.trim()));
+  document.getElementById('search-input')?.addEventListener('keydown', e => e.key === 'Enter' && doSearch(e.target.value.trim()));
+  // Mobile
+  document.getElementById('search-btn-mobile')?.addEventListener('click', () => doSearch(document.getElementById('search-input-mobile')?.value.trim()));
+  document.getElementById('search-input-mobile')?.addEventListener('keydown', e => e.key === 'Enter' && doSearch(e.target.value.trim()));
+}
+initSearch();
 
 // ===== DATE TIME =====
 function updateDateTime() {
@@ -166,17 +179,6 @@ function renderMarket() {
 // ===== INIT INDEX PAGE =====
 async function initIndex() {
   if (!document.getElementById('news-grid')) return;
-
-  // Search handler
-  const searchInput = document.getElementById('search-input');
-  const searchBtn = document.getElementById('search-btn');
-  function doSearch() {
-    const q = searchInput?.value.trim();
-    if (q) window.location.href = `category.html?search=${encodeURIComponent(q)}`;
-  }
-  searchBtn?.addEventListener('click', doSearch);
-  searchInput?.addEventListener('keydown', e => e.key === 'Enter' && doSearch());
-
   const news = await fetchNews({ limit: 20 });
   renderHero(news);
   renderNewsGrid(news.slice(0, 6));
@@ -207,14 +209,9 @@ async function initCategory() {
 
   // Search handler
   const searchInput = document.getElementById('search-input');
-  const searchBtn = document.getElementById('search-btn');
   if (search && searchInput) searchInput.value = search;
-  function doSearch() {
-    const q = searchInput?.value.trim();
-    if (q) window.location.href = `category.html?search=${encodeURIComponent(q)}`;
-  }
-  searchBtn?.addEventListener('click', doSearch);
-  searchInput?.addEventListener('keydown', e => e.key === 'Enter' && doSearch());
+  const searchInputMobile = document.getElementById('search-input-mobile');
+  if (search && searchInputMobile) searchInputMobile.value = search;
 
   let page = 1;
   const limit = 10;
@@ -273,16 +270,6 @@ async function initCategory() {
 async function initArticle() {
   const body = document.querySelector('.article-body');
   if (!body) return;
-
-  // Search handler
-  const searchInput = document.getElementById('search-input');
-  const searchBtn = document.getElementById('search-btn');
-  function doSearch() {
-    const q = searchInput?.value.trim();
-    if (q) window.location.href = `category.html?search=${encodeURIComponent(q)}`;
-  }
-  searchBtn?.addEventListener('click', doSearch);
-  searchInput?.addEventListener('keydown', e => e.key === 'Enter' && doSearch());
 
   const slug = new URLSearchParams(window.location.search).get('slug');
   if (!slug) return;
