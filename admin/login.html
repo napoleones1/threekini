@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Admin - Threekini</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1C5F1F 0%, #0d3b10 100%); display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .login-wrap { width: 100%; max-width: 420px; padding: 16px; }
+    .login-box { background: #fff; border-radius: 16px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+    .logo { font-size: 28px; font-weight: 900; color: #1C5F1F; text-align: center; margin-bottom: 4px; }
+    .subtitle { text-align: center; color: #888; font-size: 13px; margin-bottom: 24px; }
+
+    .tabs { display: flex; border-bottom: 2px solid #f0f0f0; margin-bottom: 24px; }
+    .tab { flex: 1; text-align: center; padding: 10px; font-size: 14px; font-weight: 600; color: #aaa; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all .2s; }
+    .tab.active { color: #1C5F1F; border-bottom-color: #1C5F1F; }
+
+    .form-section { display: none; }
+    .form-section.active { display: block; }
+
+    .server-status { display: flex; align-items: center; gap: 8px; background: #f8f8f8; border-radius: 8px; padding: 10px 14px; margin-bottom: 20px; font-size: 12px; color: #555; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; flex-shrink: 0; }
+    .status-dot.online { background: #2e7d32; }
+    .status-dot.offline { background: #c62828; }
+    .status-dot.checking { background: #f9a825; animation: pulse 1s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+    label { font-size: 13px; font-weight: 600; color: #444; display: block; margin-bottom: 6px; }
+    .input-wrap { position: relative; margin-bottom: 16px; }
+    .input-wrap i.icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #aaa; font-size: 14px; }
+    input { width: 100%; padding: 11px 14px 11px 36px; border: 1.5px solid #e0e0e0; border-radius: 8px; font-size: 14px; outline: none; transition: border .2s; }
+    input:focus { border-color: #1C5F1F; }
+    .toggle-pw { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #aaa; cursor: pointer; font-size: 14px; }
+
+    button[type=submit] { width: 100%; background: #1C5F1F; color: #fff; border: none; padding: 13px; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .2s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 4px; }
+    button[type=submit]:hover:not(:disabled) { background: #154d18; }
+    button[type=submit]:disabled { opacity: .7; cursor: not-allowed; }
+
+    .alert { padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 16px; display: none; align-items: center; gap: 8px; }
+    .alert-error { background: #fdecea; color: #c62828; }
+    .alert-success { background: #e8f5e9; color: #2e7d32; }
+
+    .back { text-align: center; margin-top: 20px; font-size: 13px; color: #888; }
+    .back a { color: #1C5F1F; font-weight: 600; text-decoration: none; }
+    hr { border: none; border-top: 1px solid #f0f0f0; margin: 20px 0; }
+  </style>
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="login-box">
+      <div class="logo"><i class="fa fa-newspaper" style="font-size:22px;margin-right:8px"></i>Threekini</div>
+      <div class="subtitle">Panel Admin</div>
+
+      <div class="server-status">
+        <div class="status-dot checking" id="status-dot"></div>
+        <span id="status-text">Memeriksa koneksi server...</span>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab('login')">Masuk</div>
+        <div class="tab" onclick="switchTab('register')">Daftar</div>
+      </div>
+
+      <!-- LOGIN -->
+      <div class="form-section active" id="tab-login">
+        <div class="alert alert-error" id="login-error"><i class="fa fa-exclamation-circle"></i> <span id="login-error-text"></span></div>
+        <form id="login-form">
+          <label>Username</label>
+          <div class="input-wrap">
+            <i class="fa fa-user icon"></i>
+            <input type="text" id="login-username" placeholder="Masukkan username" autocomplete="username" required />
+          </div>
+          <label>Password</label>
+          <div class="input-wrap">
+            <i class="fa fa-lock icon"></i>
+            <input type="password" id="login-password" placeholder="Masukkan password" autocomplete="current-password" required />
+            <i class="fa fa-eye toggle-pw" id="toggle-pw-login"></i>
+          </div>
+          <button type="submit" id="btn-login"><i class="fa fa-sign-in-alt"></i> Masuk ke Dashboard</button>
+        </form>
+      </div>
+
+      <!-- REGISTER -->
+      <div class="form-section" id="tab-register">
+        <div class="alert alert-error" id="reg-error"><i class="fa fa-exclamation-circle"></i> <span id="reg-error-text"></span></div>
+        <div class="alert alert-success" id="reg-success"><i class="fa fa-check-circle"></i> <span id="reg-success-text"></span></div>
+        <form id="register-form">
+          <label>Username</label>
+          <div class="input-wrap">
+            <i class="fa fa-user icon"></i>
+            <input type="text" id="reg-username" placeholder="Buat username" required />
+          </div>
+          <label>Email</label>
+          <div class="input-wrap">
+            <i class="fa fa-envelope icon"></i>
+            <input type="email" id="reg-email" placeholder="Masukkan email" required />
+          </div>
+          <label>Password</label>
+          <div class="input-wrap">
+            <i class="fa fa-lock icon"></i>
+            <input type="password" id="reg-password" placeholder="Buat password (min. 6 karakter)" minlength="6" required />
+            <i class="fa fa-eye toggle-pw" id="toggle-pw-reg"></i>
+          </div>
+          <button type="submit" id="btn-register"><i class="fa fa-user-plus"></i> Buat Akun</button>
+        </form>
+      </div>
+
+      <hr />
+      <div class="back"><a href="../index.html"><i class="fa fa-arrow-left"></i> Kembali ke website</a></div>
+    </div>
+  </div>
+
+  <script>
+    // Redirect jika sudah login
+    if (localStorage.getItem('tk_token')) window.location.href = 'dashboard.html';
+
+    // Cek status server
+    async function checkServer() {
+      const dot = document.getElementById('status-dot');
+      const txt = document.getElementById('status-text');
+      try {
+        const res = await fetch('/api/auth/status', { signal: AbortSignal.timeout(4000) });
+        dot.className = 'status-dot online';
+        txt.textContent = 'Server terhubung';
+      } catch {
+        dot.className = 'status-dot offline';
+        txt.textContent = 'Server tidak dapat dijangkau — pastikan server berjalan di port 5000';
+      }
+    }
+    checkServer();
+
+    // Switch tab
+    function switchTab(tab) {
+      document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', (i === 0) === (tab === 'login')));
+      document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+      document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+    }
+
+    // Toggle password visibility
+    function togglePw(inputId, iconId) {
+      document.getElementById(iconId).addEventListener('click', function () {
+        const inp = document.getElementById(inputId);
+        inp.type = inp.type === 'password' ? 'text' : 'password';
+        this.className = inp.type === 'text' ? 'fa fa-eye-slash toggle-pw' : 'fa fa-eye toggle-pw';
+      });
+    }
+    togglePw('login-password', 'toggle-pw-login');
+    togglePw('reg-password', 'toggle-pw-reg');
+
+    // LOGIN
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btn-login');
+      const errEl = document.getElementById('login-error');
+      btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Memproses...';
+      btn.disabled = true;
+      errEl.style.display = 'none';
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: document.getElementById('login-username').value.trim(),
+            password: document.getElementById('login-password').value
+          })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Login gagal.');
+        localStorage.setItem('tk_token', data.token);
+        localStorage.setItem('tk_user', JSON.stringify(data.user));
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        document.getElementById('login-error-text').textContent = err.message;
+        errEl.style.display = 'flex';
+        btn.innerHTML = '<i class="fa fa-sign-in-alt"></i> Masuk ke Dashboard';
+        btn.disabled = false;
+      }
+    });
+
+    // REGISTER
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btn-register');
+      const errEl = document.getElementById('reg-error');
+      const sucEl = document.getElementById('reg-success');
+      btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Mendaftarkan...';
+      btn.disabled = true;
+      errEl.style.display = 'none';
+      sucEl.style.display = 'none';
+      try {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: document.getElementById('reg-username').value.trim(),
+            email: document.getElementById('reg-email').value.trim(),
+            password: document.getElementById('reg-password').value,
+            role: 'admin'
+          })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Pendaftaran gagal.');
+        document.getElementById('reg-success-text').textContent = 'Akun berhasil dibuat! Silakan login.';
+        sucEl.style.display = 'flex';
+        document.getElementById('register-form').reset();
+        setTimeout(() => switchTab('login'), 2000);
+      } catch (err) {
+        document.getElementById('reg-error-text').textContent = err.message;
+        errEl.style.display = 'flex';
+      } finally {
+        btn.innerHTML = '<i class="fa fa-user-plus"></i> Buat Akun';
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

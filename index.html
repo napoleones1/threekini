@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Threekini - Berita Terkini Indonesia</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- Breaking News Ticker -->
+  <div class="breaking-bar">
+    <span class="breaking-label">BREAKING</span>
+    <div class="ticker-wrap">
+      <div class="ticker">
+        <span>Pemerintah umumkan kebijakan ekonomi baru untuk 2026 &nbsp;•&nbsp; Timnas Indonesia lolos ke semifinal Piala Asia &nbsp;•&nbsp; Harga BBM resmi turun mulai hari ini &nbsp;•&nbsp; Gempa 5.2 SR guncang wilayah Sulawesi, tidak berpotensi tsunami &nbsp;•&nbsp;</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-top">
+        <div class="logo">Threekini</div>
+        <div class="header-right">
+          <span class="date-time" id="datetime"></span>
+          <button class="btn-subscribe">Subscribe</button>
+        </div>
+      </div>
+      <nav class="navbar">
+        <ul>
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="category.html?cat=politik">Politik</a></li>
+          <li><a href="category.html?cat=ekonomi">Ekonomi</a></li>
+          <li><a href="category.html?cat=teknologi">Teknologi</a></li>
+          <li><a href="category.html?cat=olahraga">Olahraga</a></li>
+          <li><a href="category.html?cat=hiburan">Hiburan</a></li>
+          <li><a href="category.html?cat=internasional">Internasional</a></li>
+          <li><a href="category.html?cat=gaya-hidup">Gaya Hidup</a></li>
+        </ul>
+        <div class="search-box" id="search-box">
+          <input type="text" id="search-input" placeholder="Cari berita..." />
+          <i class="fa fa-search" id="search-btn"></i>
+        </div>
+        <a href="admin/login.html" class="btn-admin"><i class="fa fa-lock"></i> Admin</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero container">
+    <div class="hero-main">
+      <a href="article.html" class="hero-card">
+        <img src="https://picsum.photos/seed/news1/800/450" alt="Berita Utama" />
+        <div class="hero-overlay">
+          <span class="category-tag politik">Politik</span>
+          <h1>Presiden Resmikan Ibu Kota Baru: Babak Baru Sejarah Indonesia Dimulai</h1>
+          <p>Upacara peresmian berlangsung meriah dengan dihadiri ribuan tamu undangan dari dalam dan luar negeri...</p>
+          <div class="meta"><i class="fa fa-clock"></i> 2 jam lalu &nbsp;|&nbsp; <i class="fa fa-user"></i> Ahmad Fauzi</div>
+        </div>
+      </a>
+    </div>
+    <div class="hero-side">
+      <a href="article.html" class="side-card">
+        <img src="https://picsum.photos/seed/news2/400/220" alt="" />
+        <div class="side-info">
+          <span class="category-tag ekonomi">Ekonomi</span>
+          <h3>Rupiah Menguat ke Level Terkuat dalam 3 Tahun Terakhir</h3>
+          <div class="meta"><i class="fa fa-clock"></i> 1 jam lalu</div>
+        </div>
+      </a>
+      <a href="article.html" class="side-card">
+        <img src="https://picsum.photos/seed/news3/400/220" alt="" />
+        <div class="side-info">
+          <span class="category-tag teknologi">Teknologi</span>
+          <h3>Startup AI Indonesia Raih Pendanaan Rp 500 Miliar dari Investor Global</h3>
+          <div class="meta"><i class="fa fa-clock"></i> 3 jam lalu</div>
+        </div>
+      </a>
+      <a href="article.html" class="side-card">
+        <img src="https://picsum.photos/seed/news4/400/220" alt="" />
+        <div class="side-info">
+          <span class="category-tag olahraga">Olahraga</span>
+          <h3>Timnas Garuda Cetak Sejarah di Kancah Sepak Bola Asia</h3>
+          <div class="meta"><i class="fa fa-clock"></i> 5 jam lalu</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="container main-layout">
+
+    <!-- Latest News -->
+    <section class="latest-news">
+      <div class="section-header">
+        <h2>Berita Terbaru</h2>
+        <a href="#">Lihat Semua <i class="fa fa-arrow-right"></i></a>
+      </div>
+      <div class="news-grid" id="news-grid"></div>
+    </section>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <!-- Trending -->
+      <div class="widget">
+        <div class="widget-title"><i class="fa fa-fire"></i> Trending</div>
+        <ol class="trending-list" id="trending-list"></ol>
+      </div>
+
+      <!-- Market Data -->
+      <div class="widget market-widget">
+        <div class="widget-title"><i class="fa fa-chart-line"></i> Pasar Keuangan</div>
+        <div class="market-data" id="market-data"></div>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="widget newsletter-widget">
+        <div class="widget-title"><i class="fa fa-envelope"></i> Newsletter</div>
+        <p>Dapatkan berita terpilih langsung di inbox Anda.</p>
+        <input type="email" placeholder="Email Anda..." />
+        <button>Daftar Sekarang</button>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Category Sections -->
+  <section class="category-section container">
+    <div class="section-header">
+      <h2>Teknologi</h2>
+      <a href="#">Lihat Semua <i class="fa fa-arrow-right"></i></a>
+    </div>
+    <div class="cat-grid" id="tech-grid"></div>
+  </section>
+
+  <section class="category-section container">
+    <div class="section-header">
+      <h2>Ekonomi & Bisnis</h2>
+      <a href="#">Lihat Semua <i class="fa fa-arrow-right"></i></a>
+    </div>
+    <div class="cat-grid" id="economy-grid"></div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="logo">Threekini</div>
+        <p>Temukan berita terkini dengan perspektif yang lebih luas, jelas, dan mudah dipahami.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="https://www.instagram.com/threekini.media?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4>Rubrik</h4>
+        <ul><li><a href="#">Politik</a></li><li><a href="#">Ekonomi</a></li><li><a href="#">Teknologi</a></li><li><a href="#">Olahraga</a></li><li><a href="#">Hiburan</a></li></ul>
+      </div>
+      <div>
+        <h4>Perusahaan</h4>
+        <ul><li><a href="#">Tentang Kami</a></li><li><a href="#">Redaksi</a></li><li><a href="#">Karir</a></li><li><a href="#">Iklan</a></li><li><a href="#">Kontak</a></li></ul>
+      </div>
+      <div>
+        <h4>Layanan</h4>
+        <ul><li><a href="#">Newsletter</a></li><li><a href="#">RSS Feed</a></li><li><a href="#">Aplikasi Mobile</a></li><li><a href="#">Kebijakan Privasi</a></li><li><a href="#">Syarat & Ketentuan</a></li></ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Threekini. Seluruh hak cipta dilindungi undang-undang.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

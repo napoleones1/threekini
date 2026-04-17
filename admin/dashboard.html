@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Admin - Threekini</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; display: flex; min-height: 100vh; }
+
+    /* Sidebar */
+    .sidebar { width: 240px; background: #1C5F1F; color: #fff; display: flex; flex-direction: column; flex-shrink: 0; }
+    .sidebar-logo { padding: 24px 20px; font-size: 22px; font-weight: 900; border-bottom: 1px solid rgba(255,255,255,.15); }
+    .sidebar-logo span { font-size: 12px; font-weight: 400; display: block; opacity: .7; margin-top: 2px; }
+    .sidebar nav { flex: 1; padding: 16px 0; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 12px 20px; cursor: pointer; font-size: 14px; transition: background .2s; }
+    .nav-item:hover, .nav-item.active { background: rgba(255,255,255,.15); }
+    .nav-item i { width: 18px; text-align: center; }
+    .sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,.15); font-size: 13px; }
+    .btn-logout { background: rgba(255,255,255,.15); border: none; color: #fff; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; width: 100%; }
+    .btn-logout:hover { background: rgba(255,255,255,.25); }
+
+    /* Main */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .topbar { background: #fff; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+    .topbar h1 { font-size: 18px; font-weight: 700; }
+    .user-info { font-size: 13px; color: #555; display: flex; align-items: center; gap: 8px; }
+    .user-info i { color: #1C5F1F; }
+    .content { flex: 1; padding: 24px; overflow-y: auto; }
+
+    /* Cards */
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+    .stat-card { background: #fff; border-radius: 10px; padding: 20px; display: flex; align-items: center; gap: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+    .stat-icon { width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff; }
+    .stat-icon.green { background: #1C5F1F; }
+    .stat-icon.blue { background: #1565c0; }
+    .stat-icon.orange { background: #e65100; }
+    .stat-icon.purple { background: #7b1fa2; }
+    .stat-info p { font-size: 12px; color: #888; }
+    .stat-info h3 { font-size: 24px; font-weight: 800; color: #222; }
+
+    /* Panel */
+    .panel { background: #fff; border-radius: 10px; padding: 24px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .panel-header h2 { font-size: 16px; font-weight: 700; }
+    .btn { padding: 9px 18px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; }
+    .btn-primary { background: #1C5F1F; color: #fff; }
+    .btn-primary:hover { background: #154d18; }
+    .btn-danger { background: #c62828; color: #fff; }
+    .btn-sm { padding: 5px 12px; font-size: 12px; }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { text-align: left; padding: 10px 12px; background: #f8f8f8; color: #555; font-weight: 600; border-bottom: 2px solid #eee; }
+    td { padding: 12px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+    tr:hover td { background: #fafafa; }
+    .badge { padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+    .badge-published { background: #e8f5e9; color: #2e7d32; }
+    .badge-draft { background: #fff3e0; color: #e65100; }
+
+    /* Form */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label { font-size: 13px; font-weight: 600; color: #444; }
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 9px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; outline: none; font-family: inherit;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #1C5F1F; }
+    .form-group textarea { resize: vertical; min-height: 200px; }
+    .form-actions { display: flex; gap: 10px; margin-top: 20px; }
+
+    /* Sections */
+    .section { display: none; }
+    .section.active { display: block; }
+
+    /* Alert */
+    .alert { padding: 12px 16px; border-radius: 6px; font-size: 13px; margin-bottom: 16px; display: none; }
+    .alert-success { background: #e8f5e9; color: #2e7d32; }
+    .alert-error { background: #fdecea; color: #c62828; }
+
+    @media (max-width: 900px) {
+      .sidebar { width: 60px; }
+      .sidebar-logo span, .nav-item span, .sidebar-footer { display: none; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .form-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-logo">Threekini <span>Admin Panel</span></div>
+    <nav>
+      <div class="nav-item active" onclick="showSection('dashboard')"><i class="fa fa-home"></i><span>Dashboard</span></div>
+      <div class="nav-item" onclick="showSection('news-list')"><i class="fa fa-newspaper"></i><span>Daftar Berita</span></div>
+      <div class="nav-item" onclick="showSection('add-news')"><i class="fa fa-plus-circle"></i><span>Tambah Berita</span></div>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="btn-logout" onclick="logout()"><i class="fa fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <h1 id="page-title">Dashboard</h1>
+      <div class="user-info"><i class="fa fa-user-circle"></i> <span id="username-display">Admin</span></div>
+    </div>
+
+    <div class="content">
+
+      <!-- Dashboard -->
+      <div class="section active" id="section-dashboard">
+        <div class="stats">
+          <div class="stat-card">
+            <div class="stat-icon green"><i class="fa fa-newspaper"></i></div>
+            <div class="stat-info"><p>Total Berita</p><h3 id="stat-total">-</h3></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon blue"><i class="fa fa-check-circle"></i></div>
+            <div class="stat-info"><p>Published</p><h3 id="stat-published">-</h3></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange"><i class="fa fa-edit"></i></div>
+            <div class="stat-info"><p>Draft</p><h3 id="stat-draft">-</h3></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple"><i class="fa fa-eye"></i></div>
+            <div class="stat-info"><p>Total Views</p><h3 id="stat-views">-</h3></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><h2>Berita Terbaru</h2></div>
+          <table><thead><tr><th>Judul</th><th>Kategori</th><th>Status</th><th>Tanggal</th></tr></thead>
+          <tbody id="recent-news"></tbody></table>
+        </div>
+      </div>
+
+      <!-- News List -->
+      <div class="section" id="section-news-list">
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Daftar Berita</h2>
+            <button class="btn btn-primary" onclick="showSection('add-news')"><i class="fa fa-plus"></i> Tambah Berita</button>
+          </div>
+          <table><thead><tr><th>Judul</th><th>Kategori</th><th>Penulis</th><th>Status</th><th>Tanggal</th><th>Aksi</th></tr></thead>
+          <tbody id="news-table"></tbody></table>
+        </div>
+      </div>
+
+      <!-- Add/Edit News -->
+      <div class="section" id="section-add-news">
+        <div class="panel">
+          <div class="panel-header"><h2 id="form-title">Tambah Berita Baru</h2></div>
+          <div class="alert alert-success" id="form-success"></div>
+          <div class="alert alert-error" id="form-error"></div>
+          <form id="news-form" enctype="multipart/form-data">
+            <input type="hidden" id="edit-id" />
+            <div class="form-grid">
+              <div class="form-group full">
+                <label>Judul Berita *</label>
+                <input type="text" id="f-title" placeholder="Masukkan judul berita..." required />
+              </div>
+              <div class="form-group">
+                <label>Kategori *</label>
+                <select id="f-category" required>
+                  <option value="">-- Pilih Kategori --</option>
+                  <option value="politik">Politik</option>
+                  <option value="ekonomi">Ekonomi</option>
+                  <option value="teknologi">Teknologi</option>
+                  <option value="olahraga">Olahraga</option>
+                  <option value="hiburan">Hiburan</option>
+                  <option value="internasional">Internasional</option>
+                  <option value="gaya-hidup">Gaya Hidup</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Status</label>
+                <select id="f-status">
+                  <option value="draft">Draft</option>
+                  <option value="published">Published</option>
+                </select>
+              </div>
+              <div class="form-group full">
+                <label>Ringkasan / Excerpt *</label>
+                <input type="text" id="f-excerpt" placeholder="Ringkasan singkat berita..." required />
+              </div>
+              <div class="form-group full">
+                <label>Isi Berita *</label>
+                <textarea id="f-content" placeholder="Tulis isi berita lengkap di sini..." required></textarea>
+              </div>
+              <div class="form-group full">
+                <label>Gambar Utama</label>
+                <input type="file" id="f-image" accept="image/jpeg,image/png,image/webp" />
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" id="btn-submit"><i class="fa fa-save"></i> Simpan Berita</button>
+              <button type="button" class="btn" style="background:#eee;color:#333" onclick="resetForm()">Reset</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const API = '/api';
+    let token = localStorage.getItem('tk_token');
+    let user = JSON.parse(localStorage.getItem('tk_user') || '{}');
+
+    // Auth guard
+    if (!token) window.location.href = 'login.html';
+    document.getElementById('username-display').textContent = user.username || 'Admin';
+
+    // Navigation
+    function showSection(name) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById('section-' + name).classList.add('active');
+      const titles = { dashboard: 'Dashboard', 'news-list': 'Daftar Berita', 'add-news': 'Tambah Berita' };
+      document.getElementById('page-title').textContent = titles[name];
+      if (name === 'news-list') loadNewsList();
+      if (name === 'dashboard') loadDashboard();
+    }
+
+    function logout() {
+      localStorage.removeItem('tk_token');
+      localStorage.removeItem('tk_user');
+      window.location.href = 'login.html';
+    }
+
+    // API helper
+    async function apiFetch(url, options = {}) {
+      const res = await fetch(API + url, {
+        ...options,
+        headers: { 'Authorization': 'Bearer ' + token, ...(options.headers || {}) }
+      });
+      if (res.status === 401) { logout(); return; }
+      return res;
+    }
+
+    // Load dashboard
+    async function loadDashboard() {
+      const res = await apiFetch('/news/all');
+      const news = await res.json();
+      const published = news.filter(n => n.status === 'published').length;
+      const draft = news.filter(n => n.status === 'draft').length;
+      const views = news.reduce((a, n) => a + (n.views || 0), 0);
+      document.getElementById('stat-total').textContent = news.length;
+      document.getElementById('stat-published').textContent = published;
+      document.getElementById('stat-draft').textContent = draft;
+      document.getElementById('stat-views').textContent = views.toLocaleString('id-ID');
+      const recent = news.slice(0, 5);
+      document.getElementById('recent-news').innerHTML = recent.map(n => `
+        <tr>
+          <td>${n.title}</td>
+          <td>${n.category}</td>
+          <td><span class="badge badge-${n.status}">${n.status}</span></td>
+          <td>${new Date(n.createdAt).toLocaleDateString('id-ID')}</td>
+        </tr>`).join('') || '<tr><td colspan="4" style="text-align:center;color:#aaa">Belum ada berita</td></tr>';
+    }
+
+    // Load news list
+    async function loadNewsList() {
+      const res = await apiFetch('/news/all');
+      const news = await res.json();
+      document.getElementById('news-table').innerHTML = news.map(n => `
+        <tr>
+          <td>${n.title}</td>
+          <td>${n.category}</td>
+          <td>${n.authorName || '-'}</td>
+          <td><span class="badge badge-${n.status}">${n.status}</span></td>
+          <td>${new Date(n.createdAt).toLocaleDateString('id-ID')}</td>
+          <td style="display:flex;gap:6px">
+            <button class="btn btn-primary btn-sm" onclick="editNews('${n._id}','${n.title.replace(/'/g,"\\'")}','${n.category}','${n.status}')"><i class="fa fa-edit"></i></button>
+            <button class="btn btn-danger btn-sm" onclick="deleteNews('${n._id}')"><i class="fa fa-trash"></i></button>
+          </td>
+        </tr>`).join('') || '<tr><td colspan="6" style="text-align:center;color:#aaa">Belum ada berita</td></tr>';
+    }
+
+    // Submit form
+    document.getElementById('news-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btn-submit');
+      btn.disabled = true; btn.textContent = 'Menyimpan...';
+      hideAlerts();
+
+      const formData = new FormData();
+      formData.append('title', document.getElementById('f-title').value);
+      formData.append('excerpt', document.getElementById('f-excerpt').value);
+      formData.append('content', document.getElementById('f-content').value);
+      formData.append('category', document.getElementById('f-category').value);
+      formData.append('status', document.getElementById('f-status').value);
+      const img = document.getElementById('f-image').files[0];
+      if (img) formData.append('image', img);
+
+      const editId = document.getElementById('edit-id').value;
+      const url = editId ? `/news/${editId}` : '/news';
+      const method = editId ? 'PUT' : 'POST';
+
+      try {
+        const res = await apiFetch(url, { method, body: formData });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message);
+        showAlert('success', editId ? 'Berita berhasil diperbarui.' : 'Berita berhasil disimpan.');
+        resetForm();
+      } catch (err) {
+        showAlert('error', err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa fa-save"></i> Simpan Berita';
+      }
+    });
+
+    function editNews(id, title, category, status) {
+      document.getElementById('edit-id').value = id;
+      document.getElementById('f-title').value = title;
+      document.getElementById('f-category').value = category;
+      document.getElementById('f-status').value = status;
+      document.getElementById('form-title').textContent = 'Edit Berita';
+      showSection('add-news');
+    }
+
+    async function deleteNews(id) {
+      if (!confirm('Yakin ingin menghapus berita ini?')) return;
+      await apiFetch(`/news/${id}`, { method: 'DELETE' });
+      loadNewsList();
+    }
+
+    function resetForm() {
+      document.getElementById('news-form').reset();
+      document.getElementById('edit-id').value = '';
+      document.getElementById('form-title').textContent = 'Tambah Berita Baru';
+      hideAlerts();
+    }
+
+    function showAlert(type, msg) {
+      const el = document.getElementById('form-' + type);
+      el.textContent = msg; el.style.display = 'block';
+      setTimeout(() => el.style.display = 'none', 4000);
+    }
+
+    function hideAlerts() {
+      document.getElementById('form-success').style.display = 'none';
+      document.getElementById('form-error').style.display = 'none';
+    }
+
+    // Init
+    loadDashboard();
+  </script>
+</body>
+</html>
