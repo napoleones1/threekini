@@ -1,4 +1,6 @@
-const API = 'http://localhost:5000/api/news';
+const API = window.location.hostname === 'localhost'
+  ? 'http://localhost:5000/api/news'
+  : '/api/news';
 
 // ===== DATE TIME =====
 function updateDateTime() {
@@ -214,7 +216,7 @@ async function initCategory() {
     if (cat) query.category = cat;
     if (search) query.search = search;
 
-    const res = await fetch(`http://localhost:5000/api/news?${new URLSearchParams(query)}`);
+    const res = await fetch(`${window.location.hostname === 'localhost' ? 'http://localhost:5000' : ''}/api/news?${new URLSearchParams(query)}`);
     const data = await res.json();
     const news = data.news || [];
 
