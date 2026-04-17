@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   role:     { type: String, enum: ['admin', 'editor'], default: 'editor' },
   createdAt: { type: Date, default: Date.now }
-}, { bufferCommands: true });
+}, {});
 
 // Hash password sebelum disimpan
 userSchema.pre('save', async function (next) {
