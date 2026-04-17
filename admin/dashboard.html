@@ -102,8 +102,12 @@
       .content{padding:12px}
       .panel{padding:14px}
       .form-grid{grid-template-columns:1fr}
-      table{font-size:12px}
-      td,th{padding:8px 6px}
+      /* Tabel jadi card di mobile */
+      table thead{display:none}
+      table tr{display:block;background:#fff;border:1px solid #eee;border-radius:8px;margin-bottom:10px;padding:12px}
+      table td{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border:none;font-size:13px}
+      table td:before{content:attr(data-label);font-weight:600;color:#888;font-size:12px;margin-right:8px;flex-shrink:0}
+      table td:last-child{justify-content:flex-end;gap:6px}
       .pending-actions{flex-wrap:wrap}
     }
   </style>
@@ -325,12 +329,12 @@ async function loadNewsList() {
   const news = await res.json();
   document.getElementById('news-table').innerHTML = news.map(n => `
     <tr>
-      <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${n.title}</td>
-      <td>${n.category}</td>
-      <td>${n.authorName || '-'}</td>
-      <td><span class="badge badge-${n.status}">${n.status}</span>${n.rejectReason ? `<br><small style="color:#c62828">${n.rejectReason}</small>` : ''}</td>
-      <td>${new Date(n.createdAt).toLocaleDateString('id-ID')}</td>
-      <td style="display:flex;gap:4px;flex-wrap:wrap">
+      <td data-label="Judul" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${n.title}</td>
+      <td data-label="Kategori">${n.category}</td>
+      <td data-label="Penulis">${n.authorName || '-'}</td>
+      <td data-label="Status"><span class="badge badge-${n.status}">${n.status}</span>${n.rejectReason ? `<br><small style="color:#c62828">${n.rejectReason}</small>` : ''}</td>
+      <td data-label="Tanggal">${new Date(n.createdAt).toLocaleDateString('id-ID')}</td>
+      <td data-label="Aksi" style="display:flex;gap:4px;flex-wrap:wrap">
         <button class="btn btn-primary btn-sm" onclick="editNews('${n._id}')"><i class="fa fa-edit"></i></button>
         <button class="btn btn-danger btn-sm" onclick="deleteNews('${n._id}')"><i class="fa fa-trash"></i></button>
         ${user.role === 'superadmin' && n.status === 'pending' ? `
