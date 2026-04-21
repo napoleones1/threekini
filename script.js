@@ -1,4 +1,4 @@
-const API = '/api/news';
+﻿const API = '/api/news';
 
 // ===== HAMBURGER MENU =====
 function toggleMenu() {
@@ -39,7 +39,7 @@ async function initTicker() {
     const data = await res.json();
     const news = data.news || [];
     if (!news.length) return;
-    ticker.textContent = news.map(n => n.title).join(' \u00a0•\u00a0 ') + ' \u00a0•\u00a0 ';
+    ticker.textContent = news.map(n => n.title).join(' \u00a0â€¢\u00a0 ') + ' \u00a0â€¢\u00a0 ';
   } catch { /* pakai teks default */ }
 }
 function updateDateTime() {
@@ -165,92 +165,79 @@ function renderTrending(news) {
     <li><a href="article.html?slug=${n.slug}">${n.title}</a></li>`).join('');
 }
 
-// ===== MARKET DATA (static) =====
-const marketData = [
+// ===== MARKET DATA =====
+const marketFallback = [
   { name: 'IHSG', value: '8.542,31', change: '+1.24%', up: true },
-  { name: 'USD/IDR', value: '15.420', change: '-0.32%', up: false },
+  { name: 'USD/IDR', value: 'Rp 16.200', change: '-0.32%', up: false },
   { name: 'Emas (gr)', value: 'Rp 1.245.000', change: '+0.87%', up: true },
   { name: 'Minyak (bbl)', value: '$78.45', change: '-0.54%', up: false },
-  { name: 'Bitcoin', value: '$68.230', change: '+2.15%', up: true },
+  { name: 'Bitcoin', value: '$75.000', change: '+2.15%', up: true },
 ];
 
-// ===== MARKET DATA REAL-TIME =====
-const marketPrev = {};
+function renderMarketItems(items) {
+  const el = document.getElementById('market-data');
+  if (!el) return;
+  el.innerHTML = items.map(function(m) {
+    return '<div class="market-item">' +
+      '<span class="market-name">' + m.name + (m.live ? ' <span style="font-size:9px;background:#e8f5e9;color:#2e7d32;padding:1px 5px;border-radius:10px;font-weight:700">LIVE</span>' : '') + '</span>' +
+      '<div style="text-align:right">' +
+      '<div class="market-val ' + (m.up ? 'up' : 'down') + '">' + m.value + '</div>' +
+      '<div class="market-change ' + (m.up ? 'up' : 'down') + '">' + (m.up ? '▲' : '▼') + ' ' + m.change + '</div>' +
+      '</div></div>';
+  }).join('');
+}
+
+function renderMarket() {
+  renderMarketItems(marketFallback);
+}
 
 async function fetchMarketData() {
   const el = document.getElementById('market-data');
   if (!el) return;
 
   try {
-    // Fetch paralel: crypto (CoinGecko) + forex (exchangerate)
     const [cryptoRes, forexRes] = await Promise.allSettled([
       fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true'),
       fetch('https://open.er-api.com/v6/latest/USD')
     ]);
 
-    let btcPrice = null, btcChange = null, usdIdr = null;
+    var btcPrice = null, btcChange = null, usdIdr = null;
 
     if (cryptoRes.status === 'fulfilled' && cryptoRes.value.ok) {
-      const d = await cryptoRes.value.json();
-      btcPrice = d.bitcoin?.usd;
-      btcChange = d.bitcoin?.usd_24h_change;
+      var d = await cryptoRes.value.json();
+      btcPrice = d.bitcoin ? d.bitcoin.usd : null;
+      btcChange = d.bitcoin ? d.bitcoin.usd_24h_change : null;
     }
     if (forexRes.status === 'fulfilled' && forexRes.value.ok) {
-      const d = await forexRes.value.json();
-      usdIdr = d.rates?.IDR;
+      var d2 = await forexRes.value.json();
+      usdIdr = d2.rates ? d2.rates.IDR : null;
     }
 
-    // Hitung perubahan USD/IDR dari sebelumnya
-    const prevIdr = marketPrev.usdIdr || usdIdr;
-    const idrChange = usdIdr && prevIdr ? ((usdIdr - prevIdr) / prevIdr * 100) : 0;
-    marketPrev.usdIdr = usdIdr;
-
-    const items = [
+    var items = [
       {
         name: 'Bitcoin',
-        value: btcPrice ? '$' + btcPrice.toLocaleString('en-US', {maximumFractionDigits:0}) : '-',
-        change: btcChange ? (btcChange >= 0 ? '+' : '') + btcChange.toFixed(2) + '%' : '-',
-        up: btcChange >= 0
+        value: btcPrice ? ('$' + Math.round(btcPrice).toLocaleString('en-US')) : '$75.000',
+        change: btcChange ? ((btcChange >= 0 ? '+' : '') + btcChange.toFixed(2) + '%') : '+2.15%',
+        up: btcChange !== null ? btcChange >= 0 : true,
+        live: !!btcPrice
       },
       {
         name: 'USD/IDR',
-        value: usdIdr ? 'Rp ' + Math.round(usdIdr).toLocaleString('id-ID') : '-',
-        change: idrChange ? (idrChange >= 0 ? '+' : '') + idrChange.toFixed(2) + '%' : '—',
-        up: idrChange <= 0 // IDR menguat = USD/IDR turun = bagus
+        value: usdIdr ? ('Rp ' + Math.round(usdIdr).toLocaleString('id-ID')) : 'Rp 16.200',
+        change: '—',
+        up: false,
+        live: !!usdIdr
       },
-      { name: 'Emas (gr)', value: 'Rp 1.245.000', change: '+0.87%', up: true },
-      { name: 'Minyak (bbl)', value: '$78.45', change: '-0.54%', up: false },
-      { name: 'IHSG', value: '8.542,31', change: '+1.24%', up: true },
+      { name: 'Emas (gr)', value: 'Rp 1.245.000', change: '+0.87%', up: true, live: false },
+      { name: 'Minyak (bbl)', value: '$78.45', change: '-0.54%', up: false, live: false },
+      { name: 'IHSG', value: '8.542,31', change: '+1.24%', up: true, live: false },
     ];
 
-    el.innerHTML = items.map(m => `
-      <div class="market-item">
-        <span class="market-name">${m.name}</span>
-        <div style="text-align:right">
-          <div class="market-val ${m.up ? 'up' : 'down'}">${m.value}</div>
-          <div class="market-change ${m.up ? 'up' : 'down'}">${m.up ? '▲' : '▼'} ${m.change}</div>
-        </div>
-      </div>`).join('');
-
-  } catch {
-    // Fallback ke data statis jika API gagal
+    renderMarketItems(items);
+  } catch(e) {
     renderMarket();
   }
 }
-
-function renderMarket() {
-  const el = document.getElementById('market-data');
-  if (!el) return;
-  el.innerHTML = marketData.map(m => `
-    <div class="market-item">
-      <span class="market-name">${m.name}</span>
-      <div style="text-align:right">
-        <div class="market-val ${m.up ? 'up' : 'down'}">${m.value}</div>
-        <div class="market-change ${m.up ? 'up' : 'down'}">${m.up ? '▲' : '▼'} ${m.change}</div>
-      </div>
-    </div>`).join('');
-}
-
 // ===== INIT INDEX PAGE =====
 async function initIndex() {
   if (!document.getElementById('news-grid')) return;
@@ -383,3 +370,4 @@ initTicker();
 initIndex();
 initCategory();
 initArticle();
+

@@ -226,6 +226,28 @@
       document.getElementById('nl-email').value = '';
       setTimeout(() => success.style.display = 'none', 5000);
     });
+
+    // Isi preview email dari berita terbaru
+    async function loadEmailPreview() {
+      try {
+        const res = await fetch('/api/news?limit=5');
+        const data = await res.json();
+        const news = data.news || [];
+        if (!news.length) return;
+        const catLabel = { politik:'Politik', ekonomi:'Ekonomi', teknologi:'Teknologi', olahraga:'Olahraga', hiburan:'Hiburan', internasional:'Internasional', 'gaya-hidup':'Gaya Hidup' };
+        const readTime = () => Math.floor(Math.random() * 4) + 2;
+        document.querySelector('.email-body').innerHTML =
+          '<p class="email-greeting">Selamat pagi! Ini ' + news.length + ' berita terpenting hari ini:</p>' +
+          news.map((n, i) =>
+            '<div class="email-news-item">' +
+            '<div class="email-news-num">' + (i+1) + '</div>' +
+            '<div><h4>' + n.title + '</h4>' +
+            '<p>' + (catLabel[n.category] || n.category) + ' &bull; ' + readTime() + ' menit baca</p></div>' +
+            '</div>'
+          ).join('');
+      } catch(e) { /* pakai konten default */ }
+    }
+    loadEmailPreview();
   </script>
 </body>
 </html>
