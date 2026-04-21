@@ -5,7 +5,7 @@ const newsSchema = new mongoose.Schema({
   slug:      { type: String, unique: true },
   excerpt:   { type: String, required: true },
   content:   { type: String, required: true },
-  category:  { type: String, required: true, enum: ['politik','ekonomi','teknologi','olahraga','hiburan','internasional','gaya-hidup'] },
+  category:  { type: String, required: true, enum: ['politik','ekonomi','teknologi','olahraga','hiburan','internasional','hukum','gaya-hidup'] },
   image:     { type: String, default: '' },
   author:    { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   authorName:{ type: String },

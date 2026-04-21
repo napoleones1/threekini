@@ -54,11 +54,11 @@ setInterval(updateDateTime, 60000);
 // ===== CATEGORY COLOR MAP =====
 const catClass = {
   politik: 'politik', ekonomi: 'ekonomi', teknologi: 'teknologi',
-  olahraga: 'olahraga', hiburan: 'hiburan', internasional: 'internasional', 'gaya-hidup': 'hiburan'
+  olahraga: 'olahraga', hiburan: 'hiburan', internasional: 'internasional', hukum: 'hukum', 'gaya-hidup': 'hiburan'
 };
 
 function catLabel(cat) {
-  const map = { politik:'Politik', ekonomi:'Ekonomi', teknologi:'Teknologi', olahraga:'Olahraga', hiburan:'Hiburan', internasional:'Internasional', 'gaya-hidup':'Gaya Hidup' };
+  const map = { politik:'Politik', ekonomi:'Ekonomi', teknologi:'Teknologi', olahraga:'Olahraga', hiburan:'Hiburan', internasional:'Internasional', hukum:'Hukum', 'gaya-hidup':'Gaya Hidup' };
   return map[cat] || cat;
 }
 
@@ -260,7 +260,7 @@ async function initCategory() {
   const cat = params.get('cat');
   const search = params.get('search');
 
-  const catLabels = { politik:'Politik', ekonomi:'Ekonomi', teknologi:'Teknologi', olahraga:'Olahraga', hiburan:'Hiburan', internasional:'Internasional', 'gaya-hidup':'Gaya Hidup' };
+  const catLabels = { politik:'Politik', ekonomi:'Ekonomi', teknologi:'Teknologi', olahraga:'Olahraga', hiburan:'Hiburan', internasional:'Internasional', hukum:'Hukum', 'gaya-hidup':'Gaya Hidup' };
   const titleEl = document.getElementById('page-title');
 
   // Set active nav
