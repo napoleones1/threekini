@@ -24,6 +24,7 @@ function createApp() {
   app.use(express.json());
   app.use('/api/auth', require('../server/routes/auth'));
   app.use('/api/news', require('../server/routes/news'));
+  app.use('/rss.xml', require('../server/routes/rss'));
   app.get('/api/ping', (req, res) => {
     res.json({ status: 'ok', mongo: mongoose.connection.readyState });
   });

@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Newsletter - Threekini</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    .page-hero{background:linear-gradient(135deg,#1C5F1F,#0d3b10);color:#fff;padding:60px 0;text-align:center}
+    .page-hero h1{font-size:36px;margin-bottom:12px}
+    .page-hero p{font-size:16px;opacity:.85;max-width:600px;margin:0 auto}
+    .nl-wrap{max-width:600px;margin:48px auto;padding:0 16px}
+    .nl-card{background:#fff;border-radius:12px;padding:36px;box-shadow:0 4px 20px rgba(0,0,0,.08);text-align:center}
+    .nl-card i{font-size:48px;color:#1C5F1F;margin-bottom:16px}
+    .nl-card h2{font-size:24px;margin-bottom:8px}
+    .nl-card p{font-size:15px;color:#666;margin-bottom:24px;line-height:1.7}
+    .nl-form{display:flex;gap:10px;margin-bottom:16px}
+    .nl-form input{flex:1;padding:12px 16px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none}
+    .nl-form input:focus{border-color:#1C5F1F}
+    .nl-form button{background:#1C5F1F;color:#fff;border:none;padding:12px 24px;border-radius:8px;font-weight:700;cursor:pointer;font-size:14px;white-space:nowrap}
+    .nl-form button:hover{background:#154d18}
+    .nl-benefits{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px;text-align:left}
+    .nl-benefit{display:flex;align-items:center;gap:8px;font-size:13px;color:#555}
+    .nl-benefit i{color:#1C5F1F;width:16px}
+    .success-msg{background:#e8f5e9;color:#2e7d32;padding:14px;border-radius:8px;margin-bottom:16px;display:none;font-weight:600}
+    @media(max-width:500px){.nl-form{flex-direction:column}.nl-benefits{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="breaking-bar"><span class="breaking-label">BREAKING</span><div class="ticker-wrap"><div class="ticker"><span>Memuat berita terkini...</span></div></div></div>
+  <header class="header"><div class="container">
+    <div class="header-top"><a href="index.html" class="logo" style="text-decoration:none">Threekini</a><div class="header-right"><span class="date-time" id="datetime"></span><button class="btn-subscribe">Subscribe</button></div></div>
+    <nav class="navbar">
+      <ul id="nav-menu"><li><a href="index.html">Home</a></li><li><a href="category.html?cat=politik">Politik</a></li><li><a href="category.html?cat=ekonomi">Ekonomi</a></li><li><a href="category.html?cat=teknologi">Teknologi</a></li><li><a href="category.html?cat=olahraga">Olahraga</a></li><li><a href="category.html?cat=hiburan">Hiburan</a></li><li><a href="category.html?cat=internasional">Internasional</a></li></ul>
+      <div class="navbar-right"><div class="search-box"><input type="text" id="search-input" placeholder="Cari berita..." /><i class="fa fa-search" id="search-btn"></i></div><a href="admin/login.html" class="btn-admin"><i class="fa fa-lock"></i> Admin</a></div>
+      <div class="navbar-row"><button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button><div class="search-box search-mobile"><input type="text" id="search-input-mobile" placeholder="Cari berita..." /><i class="fa fa-search" id="search-btn-mobile"></i></div><a href="admin/login.html" class="btn-admin"><i class="fa fa-lock"></i> Admin</a></div>
+    </nav>
+  </div></header>
+
+  <div class="page-hero">
+    <h1>Newsletter Threekini</h1>
+    <p>Dapatkan ringkasan berita terpilih langsung di inbox Anda setiap hari</p>
+  </div>
+
+  <div class="nl-wrap">
+    <div class="nl-card">
+      <i class="fa fa-envelope-open-text"></i>
+      <h2>Langganan Gratis</h2>
+      <p>Jangan lewatkan berita penting. Kami kirimkan ringkasan berita terbaik setiap pagi langsung ke email Anda.</p>
+      <div class="success-msg" id="success-msg"><i class="fa fa-check-circle"></i> Berhasil! Cek email Anda untuk konfirmasi.</div>
+      <form id="nl-form">
+        <div class="nl-form">
+          <input type="email" id="nl-email" placeholder="Masukkan email Anda..." required />
+          <button type="submit"><i class="fa fa-paper-plane"></i> Daftar</button>
+        </div>
+      </form>
+      <small style="color:#aaa;font-size:12px">Kami tidak akan mengirim spam. Berhenti berlangganan kapan saja.</small>
+      <div class="nl-benefits">
+        <div class="nl-benefit"><i class="fa fa-check"></i> Ringkasan berita harian</div>
+        <div class="nl-benefit"><i class="fa fa-check"></i> Berita eksklusif</div>
+        <div class="nl-benefit"><i class="fa fa-check"></i> Analisis mendalam</div>
+        <div class="nl-benefit"><i class="fa fa-check"></i> Gratis selamanya</div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer"><div class="container footer-grid">
+    <div><div class="logo">Threekini</div><p>Temukan berita terkini dengan perspektif yang lebih luas, jelas, dan mudah dipahami.</p><div class="social-links"><a href="#"><i class="fab fa-facebook"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="https://www.instagram.com/threekini.media" target="_blank"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-youtube"></i></a></div></div>
+    <div><h4>Rubrik</h4><ul><li><a href="category.html?cat=politik">Politik</a></li><li><a href="category.html?cat=ekonomi">Ekonomi</a></li><li><a href="category.html?cat=teknologi">Teknologi</a></li><li><a href="category.html?cat=olahraga">Olahraga</a></li></ul></div>
+    <div><h4>Perusahaan</h4><ul><li><a href="tentang.html">Tentang Kami</a></li><li><a href="redaksi.html">Redaksi</a></li><li><a href="karir.html">Karir</a></li><li><a href="iklan.html">Iklan</a></li><li><a href="kontak.html">Kontak</a></li></ul></div>
+    <div><h4>Layanan</h4><ul><li><a href="newsletter.html">Newsletter</a></li><li><a href="rss.xml">RSS Feed</a></li><li><a href="privasi.html">Kebijakan Privasi</a></li><li><a href="syarat.html">Syarat & Ketentuan</a></li></ul></div>
+  </div><div class="footer-bottom"><p>&copy; 2026 Threekini. Seluruh hak cipta dilindungi undang-undang.</p></div></footer>
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('nl-form').addEventListener('submit', e => {
+      e.preventDefault();
+      document.getElementById('success-msg').style.display = 'block';
+      document.getElementById('nl-email').value = '';
+    });
+  </script>
+</body>
+</html>
+

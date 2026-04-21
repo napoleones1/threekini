@@ -174,6 +174,70 @@ const marketData = [
   { name: 'Bitcoin', value: '$68.230', change: '+2.15%', up: true },
 ];
 
+// ===== MARKET DATA REAL-TIME =====
+const marketPrev = {};
+
+async function fetchMarketData() {
+  const el = document.getElementById('market-data');
+  if (!el) return;
+
+  try {
+    // Fetch paralel: crypto (CoinGecko) + forex (exchangerate)
+    const [cryptoRes, forexRes] = await Promise.allSettled([
+      fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true'),
+      fetch('https://open.er-api.com/v6/latest/USD')
+    ]);
+
+    let btcPrice = null, btcChange = null, usdIdr = null;
+
+    if (cryptoRes.status === 'fulfilled' && cryptoRes.value.ok) {
+      const d = await cryptoRes.value.json();
+      btcPrice = d.bitcoin?.usd;
+      btcChange = d.bitcoin?.usd_24h_change;
+    }
+    if (forexRes.status === 'fulfilled' && forexRes.value.ok) {
+      const d = await forexRes.value.json();
+      usdIdr = d.rates?.IDR;
+    }
+
+    // Hitung perubahan USD/IDR dari sebelumnya
+    const prevIdr = marketPrev.usdIdr || usdIdr;
+    const idrChange = usdIdr && prevIdr ? ((usdIdr - prevIdr) / prevIdr * 100) : 0;
+    marketPrev.usdIdr = usdIdr;
+
+    const items = [
+      {
+        name: 'Bitcoin',
+        value: btcPrice ? '$' + btcPrice.toLocaleString('en-US', {maximumFractionDigits:0}) : '-',
+        change: btcChange ? (btcChange >= 0 ? '+' : '') + btcChange.toFixed(2) + '%' : '-',
+        up: btcChange >= 0
+      },
+      {
+        name: 'USD/IDR',
+        value: usdIdr ? 'Rp ' + Math.round(usdIdr).toLocaleString('id-ID') : '-',
+        change: idrChange ? (idrChange >= 0 ? '+' : '') + idrChange.toFixed(2) + '%' : '—',
+        up: idrChange <= 0 // IDR menguat = USD/IDR turun = bagus
+      },
+      { name: 'Emas (gr)', value: 'Rp 1.245.000', change: '+0.87%', up: true },
+      { name: 'Minyak (bbl)', value: '$78.45', change: '-0.54%', up: false },
+      { name: 'IHSG', value: '8.542,31', change: '+1.24%', up: true },
+    ];
+
+    el.innerHTML = items.map(m => `
+      <div class="market-item">
+        <span class="market-name">${m.name}</span>
+        <div style="text-align:right">
+          <div class="market-val ${m.up ? 'up' : 'down'}">${m.value}</div>
+          <div class="market-change ${m.up ? 'up' : 'down'}">${m.up ? '▲' : '▼'} ${m.change}</div>
+        </div>
+      </div>`).join('');
+
+  } catch {
+    // Fallback ke data statis jika API gagal
+    renderMarket();
+  }
+}
+
 function renderMarket() {
   const el = document.getElementById('market-data');
   if (!el) return;
@@ -194,7 +258,8 @@ async function initIndex() {
   renderHero(news);
   renderNewsGrid(news.slice(0, 6));
   renderTrending(news);
-  renderMarket();
+  fetchMarketData();
+  setInterval(fetchMarketData, 60000);
   renderCatGrid('tech-grid', 'teknologi');
   renderCatGrid('economy-grid', 'ekonomi');
 }
